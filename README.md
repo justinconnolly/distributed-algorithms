@@ -1,3 +1,9 @@
-# Distributed Algorithms
+# Distributed and Graph Algorithms
 
-Testing and practice for some distributed algorithms (leader election, etc.).
+Practice for some distributed and graph algorithms. Ideally this turns into a reasonable testing platform for COMP4001 - Distributed Computing and COMP5900 - Multiagent Systems and is useable for COMP2804 - Discrete Structures II and COMP3804 - Design and Analysis of Algorithms I
+
+## TODO
+DFS, Dijkstra, A*, Minimum spanning tree (Prim's), Leader Election, Maybe flow
+
+## DONE
+Adding weighted edges, BFS
