@@ -57,21 +57,22 @@ class PriorityQueue:
         self.a[i][0] = key
         self.bubble_up(i)
 
+if __name__ == "__main__":
+    arr = [
+        [1,4],
+        [5,1],
+        [3,0],
+        [5,2],
+        [2,10]
+        ]
+    pq = PriorityQueue()
 
-arr = [
-    [1,4],
-    [5,1],
-    [3,0],
-    [5,2]
-    ]
-pq = PriorityQueue()
+    for item in arr:
+        pq.add(item)
 
-for item in arr:
-    pq.add(item)
+    print(pq.a)
 
-print(pq.a)
-
-pq.a[2][0] = 0
-pq.bubble_up(2)
-print(pq.a)
-print(pq.d)
+    pq.a[2][0] = 0
+    pq.bubble_up(2)
+    print(pq.a)
+    print(pq.d)
