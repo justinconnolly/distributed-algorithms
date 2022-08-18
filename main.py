@@ -27,10 +27,11 @@ def setup():
         [4,5,1]
     ]
     for edge in edges1:
-        network.add_edge(edge[0], edge[1], edge[2])
+        network.add_edge(edge)
     network.print_nodes()
-    # network.bfs(0,5)
-    network.first_search(0,5,False)
+    network.first_search(0, 5, True)
+    # network.get_all_pairs_paths()
+    network.apsp()
 
 if __name__ == "__main__":
     setup()
