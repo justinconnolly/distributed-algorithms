@@ -89,6 +89,35 @@ class Network:
                     seen.add(neighbour)
                     queue.append(neighbour)
         print("Unreachable.")
+
+    # why not, right? provide BFS = True parameter otherwise it'll DFS
+    def first_search(self, start, end, BFS=False):
+        if self.get_node(start) == -1 or self.get_node(end) == -1:
+            if self.get_node(start) == -1 and self.get_node(end) == -1:
+                print("Neither nodes exist.")
+            elif self.get_node(start) == -1:
+                print("Start node does not exist.")
+            else:
+                print("End node does not exist.")
+            return
+        print(f"Beginning {'BFS' if BFS else 'DFS'} from {start} to {end}")
+        queue = [start]
+        seen = set()
+        seen.add(start)
+        path = {}
+        path[start] = None
+        while queue:
+            curr = queue.pop(0) if BFS else queue.pop()
+            for neighbour in self.get_node(curr).get_unweighted_neighbours():
+                if neighbour not in seen:
+                    path[neighbour] = curr
+                    if neighbour == end:
+                        print(f"Reached {end}")
+                        self.print_path(end, path)
+                        return
+                    seen.add(neighbour)
+                    queue.append(neighbour)
+        print("Unreachable.")
             
 
 
