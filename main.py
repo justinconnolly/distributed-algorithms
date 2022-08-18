@@ -17,6 +17,7 @@ def setup():
     for edge in edges:
         network.add_edge(edge[0], edge[1], edge[2])
     network.print_nodes()
-    
+    network.bfs(0, 5)
+
 if __name__ == "__main__":
     setup()
