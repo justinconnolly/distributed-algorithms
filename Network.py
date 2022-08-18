@@ -2,7 +2,7 @@ class Network:
     class Node:
         def __init__(self, id: int):
             self.id = id
-            self.neighbours = {}    # list of Nodes
+            self.neighbours = {}    # dictionary of k:v id:weight
 
         def info(self):
             print(f"Node: {self.id}")
@@ -11,9 +11,8 @@ class Network:
             print(f"My id: {self.id}, calling: ")
             other_node_info()
 
-        def add_edge(self, node, weight):
-            # self.neighbours.append([node, weight])
-            self.neighbours[node] = weight
+        def add_edge(self, id, weight):
+            self.neighbours[id] = weight
 
         def get_unweighted_neighbours(self):
             return [neighbour for neighbour in self.neighbours]
@@ -26,11 +25,16 @@ class Network:
                 # print(", ".join([str(x) for x in self.neighbours]))
                 print(f"ID: {neighbour}, weight: {self.neighbours[neighbour]}")
             print("-----------------------")
+
+        def get_weight(self, id):
+            return self.neighbours[id]
     
     def __init__(self, num_nodes):
         self.nodes = [self.Node(x) for x in range(num_nodes)]
     
     def get_node(self, id):
+        if id >= len(self.nodes) or id < 0:
+            return -1
         return self.nodes[id]
 
     def print_nodes(self):
@@ -43,15 +47,30 @@ class Network:
         self.get_node(node1).add_edge(node2, weight)
         self.get_node(node2).add_edge(node1, weight)
 
+
+    def get_path_weight(self, path):
+        total_weight = 0
+        for i in range(1, len(path)):
+            total_weight += self.get_node(path[i]).get_weight(path[i - 1])
+        return total_weight
+
     def print_path(self, end, path_dict):
         path = [end]
         curr = path_dict[end]
         while curr is not None:
             path.append(curr)
             curr = path_dict[curr]
-        print(path[::-1])
+        print(f"{path[::-1 ]}, Weight: {self.get_path_weight(path)}")
 
     def bfs(self, start, end):
+        if self.get_node(start) == -1 or self.get_node(end) == -1:
+            if self.get_node(start) == -1 and self.get_node(end) == -1:
+                print("Neither nodes exist.")
+            elif self.get_node(start) == -1:
+                print("Start node does not exist.")
+            else:
+                print("End node does not exist.")
+            return
         print(f"Beginning BFS from {start} to {end}")
         queue = [start]
         seen = set()
@@ -70,7 +89,6 @@ class Network:
                     seen.add(neighbour)
                     queue.append(neighbour)
         print("Unreachable.")
-        # print(path)
             
 
 
