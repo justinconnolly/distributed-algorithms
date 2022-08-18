@@ -1,4 +1,5 @@
 import math
+from typing import List, Callable
 
 class Network:
     class Node:
@@ -9,20 +10,20 @@ class Network:
         def info(self) -> None:
             print(f"Node: {self.id}")
 
-        def other_info(self, other_node_info):
+        def other_info(self, other_node_info: Callable) -> None:
             print(f"My id: {self.id}, calling: ")
             other_node_info()
 
         def add_edge(self, id: int, weight: int) -> None:
             self.neighbours[id] = weight
 
-        def get_unweighted_neighbours(self):
+        def get_unweighted_neighbours(self) -> List[int]:
             return [neighbour for neighbour in self.neighbours]
 
-        def get_weighted_neighours(self):
+        def get_weighted_neighours(self) -> dict:
             return self.neighbours
 
-        def print_neighbours(self):
+        def print_neighbours(self) -> None:
             print("-----------------------")
             self.info()
             print("Neighbours:")
@@ -33,7 +34,7 @@ class Network:
         def get_weight(self, id) -> int:
             return self.neighbours[id]
     
-    def __init__(self, num_nodes) -> None:
+    def __init__(self, num_nodes: int) -> None:
         self.nodes = [self.Node(x) for x in range(num_nodes)]
     
     def get_node(self, id: int) -> Node:
@@ -46,21 +47,25 @@ class Network:
             node.print_neighbours()
 
     # def add_edge(self, node1, node2, weight):
-    def add_edge(self, new_edge):
+    def add_edge(self, new_edge: List[int]) -> None:
         node1, node2, weight = new_edge
         # self.get_node(node1).add_edge(self.get_node(node2), weight)
         # self.get_node(node2).add_edge(self.get_node(node1), weight)
         self.get_node(node1).add_edge(node2, weight)
         self.get_node(node2).add_edge(node1, weight)
+    
+    # not strictly necessary, but reasonable to have
+    def update_edge(self, updated_edge: List[int]) -> None:
+        self.add_edge(updated_edge)
 
 
-    def get_path_weight(self, path) -> int:
+    def get_path_weight(self, path: List[List[int]]) -> int:
         total_weight = 0
         for i in range(1, len(path)):
             total_weight += self.get_node(path[i]).get_weight(path[i - 1])
         return total_weight
 
-    def print_path(self, end, path_dict) -> None:
+    def print_path(self, end: int, path_dict: dict) -> None:
         path = [end]
         curr = path_dict[end]
         while curr is not None:
@@ -68,7 +73,8 @@ class Network:
             curr = path_dict[curr]
         print(f"{path[::-1 ]}, Weight: {self.get_path_weight(path)}")
 
-    def bfs(self, start, end):
+    # this was made redundant with the addition of first_search below
+    def bfs(self, start: int, end: int) -> None:
         if self.get_node(start) == -1 or self.get_node(end) == -1:
             if self.get_node(start) == -1 and self.get_node(end) == -1:
                 print("Neither nodes exist.")
@@ -125,7 +131,7 @@ class Network:
                     queue.append(neighbour)
         print("Unreachable.")
 
-    def get_path_matrix(self):
+    def get_path_matrix(self) -> List[List[int]]:
         paths = [[math.inf for x in range(len(self.nodes))] for y in range(len(self.nodes))]
         for i,node in enumerate(self.nodes):
             paths[i][i] = 0
@@ -133,7 +139,7 @@ class Network:
                 paths[i][key] = node.get_weight(key)
         return paths
 
-    def floyd_warshall(self):
+    def floyd_warshall(self) -> List[List[int]]:
         paths = self.get_path_matrix()
         for k in range(len(paths)):
             for j in range(len(paths)):
@@ -141,7 +147,7 @@ class Network:
                     paths[i][j] = min([paths[i][k] + paths[k][j], paths[i][j]])
         return paths
 
-    def apsp(self):
+    def apsp(self) -> None:
         paths = self.floyd_warshall()
         for i, path in enumerate(paths):
             print(f"{i}: {path}")
