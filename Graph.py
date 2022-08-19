@@ -48,14 +48,15 @@ class Graph:
             node.print_neighbours()
 
     # def add_edge(self, node1, node2, weight):
-    def add_edge(self, new_edge: List[int]) -> None:
-        node1, node2, weight = new_edge
+    # def add_edge(self, new_edge: List[int]) -> None:
+    def add_edge(self, node1: int, node2: int, weight: int):
+        # node1, node2, weight = new_edge
         # self.get_node(node1).add_edge(self.get_node(node2), weight)
         # self.get_node(node2).add_edge(self.get_node(node1), weight)
         self.get_node(node1).add_edge(node2, weight)
         self.get_node(node2).add_edge(node1, weight)
     
-    # not strictly necessary, but reasonable to have
+    # not strictly necessary because the edges are stored in dictionaries, but reasonable to have
     def update_edge(self, updated_edge: List[int]) -> None:
         self.add_edge(updated_edge)
 
@@ -132,8 +133,7 @@ class Graph:
                     path[neighbour] = curr
                     if neighbour == end:
                         print(f"Reached {end}")
-                        return(self.print_path(end, path))
-                        return path
+                        return self.print_path(end, path)
                     seen.add(neighbour)
                     queue.append(neighbour)
         print("Unreachable.")
@@ -163,6 +163,24 @@ class Graph:
         if not self.check_nodes_exist(start, end):
             return
         pq = PriorityQueue()
+        dist = {start: 0}
+        prev = {start: None}
+
+        for node in self.nodes:
+            if node.id != start:
+                dist[node.id] = math.inf
+                prev[node.id] = None
+            pq.add(node.id, dist[node.id])
+
+        while not pq.is_empty():
+            weight, curr = pq.get_min()
+            neighbours = self.get_node(curr).get_weighted_neighours()
+            for neighbour in neighbours:
+                alt = dist[curr] + neighbours[neighbour]
+                if alt < dist[neighbour] and dist[curr] is not math.inf:
+                    dist[neighbour] = alt
+                    prev[neighbour] = curr
+        return self.print_path(end, prev)
 
 if __name__ == "__main__":
     network = Graph()
