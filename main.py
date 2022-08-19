@@ -39,7 +39,7 @@ def setup():
         ],
         'dijkstra': [
             [0, 1, 2, 5],
-            [0, 1, 4, 5]          
+            [0, 3, 2, 4, 5]         
         ]
     }
 
@@ -66,8 +66,12 @@ def setup():
         # for path_search in solutions:
         #     assert
         assert network.first_search(0, 5, True) == solutions['bfs'][i]
+        print("=======")
         assert network.first_search(0, 5, False) == solutions['dfs'][i]
+        print("=======")
         assert network.dijkstra(0,5) == solutions['dijkstra'][i]
+        print("=======")
+        print("All-pairs shortest-paths:")
         network.apsp()
         print("---------------------")
 
