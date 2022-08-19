@@ -7,7 +7,7 @@ Ideally this turns into a reasonable testing platform for COMP4001 - Distributed
 
 
 ## TODO
-Cycle detection, A*, Bellman-Ford, Minimum spanning tree (Prim's), Leader Election, Maybe network flow and Diffie-Hellman
+Cycle detection, A*, Bellman-Ford, minimum spanning tree (Prim's), leader election, maybe network flow and Diffie-Hellman, updated methods to allow for digraphs (everything is essentially an undirected graph because add_edge adds it to both graphs).
 
 ## DONE
-Adding weighted edges, BFS, DFS, Floyd-Warshall APSP, Dijkstra, Priority Queue
+Adding weighted edges, BFS, DFS, Floyd-Warshall APSP, Dijkstra, priority queue (to be used)
