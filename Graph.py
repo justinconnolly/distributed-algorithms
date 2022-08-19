@@ -105,7 +105,7 @@ class Graph:
                     queue.append(neighbour)
         print("Unreachable.")
 
-    def check_nodes_exist(self, node1, node2):
+    def check_nodes_exist(self, node1: int, node2: int) -> bool:
         if self.get_node(node1) == -1 or self.get_node(node2) == -1:
             if self.get_node(node1) == -1 and self.get_node(node2) == -1:
                 print("Neither nodes exist.")
@@ -117,7 +117,7 @@ class Graph:
         return True
 
     # why not, right? provide BFS = True parameter otherwise it'll DFS. Could probably return the path?
-    def first_search(self, start: int, end: int, BFS: bool=False) -> None:
+    def first_search(self, start: int, end: int, BFS: bool=False) -> List[int]:
         if not self.check_nodes_exist(start, end):
             return
         print(f"Beginning {'BFS' if BFS else 'DFS'} from {start} to {end}")
