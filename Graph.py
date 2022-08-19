@@ -162,6 +162,7 @@ class Graph:
     def dijkstra(self, start: int, end: int) -> List[int]:
         if not self.check_nodes_exist(start, end):
             return
+        print(f"Beginning Dijkstra's algorithm from {start} to {end}.")
         pq = PriorityQueue()
         dist = {start: 0}
         prev = {start: None}
@@ -177,9 +178,10 @@ class Graph:
             neighbours = self.get_node(curr).get_weighted_neighours()
             for neighbour in neighbours:
                 alt = dist[curr] + neighbours[neighbour]
-                if alt < dist[neighbour] and dist[curr] is not math.inf:
+                if alt < dist[neighbour] and dist[curr] is not math.inf and pq.contains(neighbour):
                     dist[neighbour] = alt
                     prev[neighbour] = curr
+                    pq.decrease_key(neighbour, alt)
         return self.print_path(end, prev)
 
 if __name__ == "__main__":
