@@ -1,4 +1,6 @@
 from typing import List
+
+# contains is O(n), and decrease_key is O(n + logn). Need to fix the index dictionary to reduce those of O(1) and O(logn)
 class PriorityQueue:
     def __init__(self) -> None:
         self.a = []
@@ -56,12 +58,20 @@ class PriorityQueue:
             i = j
 
     def decrease_key(self, node: int, weight: int) -> None:
-        i = self.d[node]
+        # i = self.d[node]
+        for index, pair in enumerate(self.a):
+            if pair[1] == node:
+                i = index
+                break
         self.a[i][0] = weight
         self.bubble_up(i)
 
     def contains(self, node: int) -> bool:
-        return node in self.d
+        # return node in self.d
+        for i, pair in enumerate(self.a):
+            if pair[1] == node:
+                return True
+        return False
 
     def is_empty(self):
         return len(self.a) == 0
