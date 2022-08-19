@@ -1,7 +1,8 @@
 import math
 from typing import List, Callable
+from PriorityQueue import PriorityQueue
 
-class Network:
+class Graph:
     class Node:
         def __init__(self, id: int) -> None:
             self.id = id
@@ -65,13 +66,14 @@ class Network:
             total_weight += self.get_node(path[i]).get_weight(path[i - 1])
         return total_weight
 
-    def print_path(self, end: int, path_dict: dict) -> None:
+    def print_path(self, end: int, path_dict: dict) -> List[int]:
         path = [end]
         curr = path_dict[end]
         while curr is not None:
             path.append(curr)
             curr = path_dict[curr]
         print(f"{path[::-1 ]}, Weight: {self.get_path_weight(path)}")
+        return path[::-1]
 
     # this was made redundant with the addition of first_search below
     def bfs(self, start: int, end: int) -> None:
@@ -102,15 +104,20 @@ class Network:
                     queue.append(neighbour)
         print("Unreachable.")
 
-    # why not, right? provide BFS = True parameter otherwise it'll DFS. Could probably return the path?
-    def first_search(self, start: int, end: int, BFS: bool=False) -> None:
-        if self.get_node(start) == -1 or self.get_node(end) == -1:
-            if self.get_node(start) == -1 and self.get_node(end) == -1:
+    def check_nodes_exist(self, node1, node2):
+        if self.get_node(node1) == -1 or self.get_node(node2) == -1:
+            if self.get_node(node1) == -1 and self.get_node(node2) == -1:
                 print("Neither nodes exist.")
-            elif self.get_node(start) == -1:
+            elif self.get_node(node1) == -1:
                 print("Start node does not exist.")
             else:
                 print("End node does not exist.")
+            return False
+        return True
+
+    # why not, right? provide BFS = True parameter otherwise it'll DFS. Could probably return the path?
+    def first_search(self, start: int, end: int, BFS: bool=False) -> None:
+        if not self.check_nodes_exist(start, end):
             return
         print(f"Beginning {'BFS' if BFS else 'DFS'} from {start} to {end}")
         queue = [start]
@@ -125,8 +132,8 @@ class Network:
                     path[neighbour] = curr
                     if neighbour == end:
                         print(f"Reached {end}")
-                        self.print_path(end, path)
-                        return
+                        return(self.print_path(end, path))
+                        return path
                     seen.add(neighbour)
                     queue.append(neighbour)
         print("Unreachable.")
@@ -152,5 +159,10 @@ class Network:
         for i, path in enumerate(paths):
             print(f"{i}: {path}")
 
+    def dijkstra(self, start: int, end: int) -> List[int]:
+        if not self.check_nodes_exist(start, end):
+            return
+        pq = PriorityQueue()
+
 if __name__ == "__main__":
-    network = Network()
+    network = Graph()
