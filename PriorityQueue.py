@@ -13,9 +13,9 @@ class PriorityQueue:
     def get_right(self, i: int) -> None:
         return 2 * (i + 1)
 
-    def add(self, x: List[int]) -> None:
-        self.a.append(x)
-        self.d[x[1]] = len(self.a) - 1
+    def add(self, x, weight) -> None:
+        self.a.append([weight, x])
+        self.d[x] = len(self.a) - 1
         self.bubble_up(len(self.a) - 1)
 
     def bubble_up(self, i: int) -> None:
@@ -62,6 +62,9 @@ class PriorityQueue:
 
     def contains(self, node: int) -> bool:
         return node in self.d
+
+    def is_empty(self):
+        return len(self.a) == 0
 
 
 if __name__ == "__main__":
