@@ -7,7 +7,7 @@ Ideally this turns into a reasonable testing platform for COMP4001 - Distributed
 
 
 ## TODO
-Priority Queue, Cycle detection, Dijkstra, A*, Bellman-Ford, Minimum spanning tree (Prim's), Leader Election, Maybe network flow and Diffie-Hellman
+Cycle detection, A*, Bellman-Ford, Minimum spanning tree (Prim's), Leader Election, Maybe network flow and Diffie-Hellman
 
 ## DONE
-Adding weighted edges, BFS, DFS, Floyd-Warshall APSP
+Adding weighted edges, BFS, DFS, Floyd-Warshall APSP, Dijkstra, Priority Queue
