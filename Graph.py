@@ -203,6 +203,7 @@ class Graph:
 
 
     def mst(self, start: int):
+        print(f"Beginning Prim's algorithm from {start}")
         curr = self.get_node(start)
         pq = PriorityQueue()
         seen = set([start])
@@ -222,7 +223,7 @@ class Graph:
                         edge_dict[neighbour] = node
                     else:
                         if self.get_node(node).get_weighted_neighours()[neighbour] < pq.get_weight(neighbour):
-                            pq.decrease_key(neighbour, min([self.get_node(node).get_weighted_neighours()[neighbour], pq.get_weight(neighbour)]))
+                            pq.decrease_key(neighbour, self.get_node(node).get_weighted_neighours()[neighbour])
                             edge_dict[neighbour] = node
         return edge_dict
 
