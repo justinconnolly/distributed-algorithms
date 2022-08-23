@@ -1,4 +1,5 @@
 import math
+from re import L
 from typing import List, Callable
 from PriorityQueue import PriorityQueue
 
@@ -34,8 +35,14 @@ class Graph:
 
         def get_weight(self, id) -> int:
             return self.neighbours[id]
+
+        def __hash__(self):
+            return hash(self.id)
+
+        # def __eq__(self, other):
+        #     return other.id == self.id
     
-    def __init__(self, num_nodes: int) -> None:
+    def __init__(self, num_nodes: int = 0) -> None:
         self.nodes = [self.Node(x) for x in range(num_nodes)]
     
     def get_node(self, id: int) -> Node:
@@ -46,6 +53,15 @@ class Graph:
     def print_nodes(self) -> None:
         for node in self.nodes:
             node.print_neighbours()
+    
+    def add_node(self, val):
+        self.nodes.append(self.Node(val))
+        
+    # this implies maybe I should have a set or dict id:index for O(1) rather than O(n)
+    def contains(self, id: int) -> bool:
+        if id in self.nodes:
+            return True
+        return False
 
     # def add_edge(self, node1, node2, weight):
     # def add_edge(self, new_edge: List[int]) -> None:
@@ -183,6 +199,42 @@ class Graph:
                     prev[neighbour] = curr
                     pq.decrease_key(neighbour, alt)
         return self.print_path(end, prev)
+
+
+
+    def mst(self, start: int):
+        curr = self.get_node(start)
+        pq = PriorityQueue()
+        seen = set([start])
+        unseen = set([x.id for x in self.nodes])
+        unseen.remove(start)
+        edge_dict = {}
+        for edge in curr.get_weighted_neighours():
+            pq.add(edge, curr.get_weighted_neighours()[edge])
+            edge_dict[edge] = start
+        while not pq.is_empty():
+            weight, node = pq.get_min()
+            seen.add(node)
+            for neighbour in self.get_node(node).get_weighted_neighours():
+                if neighbour not in seen:
+                    if not pq.contains(neighbour):
+                        pq.add(neighbour, self.get_node(node).get_weighted_neighours()[neighbour])
+                        edge_dict[neighbour] = node
+                    else:
+                        if self.get_node(node).get_weighted_neighours()[neighbour] < pq.get_weight(neighbour):
+                            pq.decrease_key(neighbour, min([self.get_node(node).get_weighted_neighours()[neighbour], pq.get_weight(neighbour)]))
+                            edge_dict[neighbour] = node
+        return edge_dict
+
+"""
+add all neighbours of start to pq
+x = [start, end]
+weight = weight of x to end
+dictionary to set dict[end] to start
+then add that pair to the mst
+"""     
+            
+
 
 if __name__ == "__main__":
     network = Graph()

@@ -75,5 +75,7 @@ def setup():
         network.apsp()
         print("---------------------")
 
+        network.mst(0)
+
 if __name__ == "__main__":
     setup()
