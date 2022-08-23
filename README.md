@@ -10,4 +10,4 @@ Ideally this turns into a reasonable testing platform for COMP4001 - Distributed
 Cycle detection, A*, Bellman-Ford, leader election, maybe network flow and Diffie-Hellman, updated methods to allow for digraphs (everything is essentially an undirected graph because add_edge adds the edge to both nodes).
 
 ## DONE
-Adding weighted edges, BFS, DFS, Floyd-Warshall APSP, Dijkstra, priority queue (to be used), Prim's algorithm for MST
+Adding weighted edges, BFS, DFS, Floyd-Warshall APSP, Dijkstra, priority queue (to be used as a backing structure for several algorithms), Prim's algorithm for MST
