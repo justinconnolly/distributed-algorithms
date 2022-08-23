@@ -40,6 +40,10 @@ def setup():
         'dijkstra': [
             [0, 1, 2, 5],
             [0, 3, 2, 4, 5]         
+        ],
+        'mst': [
+            {1: 0, 3: 0, 2: 1, 4: 2, 5: 2},
+            {1: 3, 3: 0, 2: 3, 4: 2, 5: 4}
         ]
     }
 
@@ -71,11 +75,12 @@ def setup():
         print("=======")
         assert network.dijkstra(0,5) == solutions['dijkstra'][i]
         print("=======")
+        assert network.mst(0) == solutions['mst'][i]
+        print(solutions['mst'][i])
+        print("=======")
         print("All-pairs shortest-paths:")
         network.apsp()
         print("---------------------")
-
-        network.mst(0)
 
 if __name__ == "__main__":
     setup()
