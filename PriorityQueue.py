@@ -4,7 +4,7 @@ from typing import List
 class PriorityQueue:
     def __init__(self) -> None:
         self.a = []
-        self.d = {}
+        # self.d = {}
     
     def get_parent(self, i: int) -> None:
         return i // 2
@@ -17,20 +17,20 @@ class PriorityQueue:
 
     def add(self, x, weight) -> None:
         self.a.append([weight, x])
-        self.d[x] = len(self.a) - 1
+        # self.d[x] = len(self.a) - 1
         self.bubble_up(len(self.a) - 1)
 
     def bubble_up(self, i: int) -> None:
         p = self.get_parent(i)
         while i > 0 and self.a[i] < self.a[p]:
             self.a[i], self.a[p] = self.a[p], self.a[i]
-            self.d[self.a[i][1]], self.d[self.a[p][1]] = self.d[self.a[p][1]], self.d[self.a[i][1]]
+            # self.d[self.a[i][1]], self.d[self.a[p][1]] = self.d[self.a[p][1]], self.d[self.a[i][1]]
             i = p
             p = self.get_parent(i)
 
     def get_min(self) -> List[int]:
         x = self.a[0]
-        del self.d[x[1]]
+        # del self.d[x[1]]
         if len(self.a) > 1:
             self.a[0] = self.a.pop()
             self.trickle_down(0)
@@ -54,7 +54,7 @@ class PriorityQueue:
                     j = l
             if j >= 0:
                 self.a[j], self.a[i] = self.a[i], self.a[j]
-                self.d[self.a[j][1]], self.d[self.a[i][1]] = self.d[self.a[i][1]], self.d[self.a[j][1]]
+                # self.d[self.a[j][1]], self.d[self.a[i][1]] = self.d[self.a[i][1]], self.d[self.a[j][1]]
             i = j
 
     def decrease_key(self, node: int, weight: int) -> None:
@@ -63,6 +63,7 @@ class PriorityQueue:
             if pair[1] == node:
                 i = index
                 break
+        
         self.a[i][0] = weight
         self.bubble_up(i)
 
@@ -75,6 +76,12 @@ class PriorityQueue:
 
     def is_empty(self):
         return len(self.a) == 0
+
+    def get_weight(self, id):
+        for val in self.a:
+            if val[1] == id:
+                return val[0]
+        return -1
 
 
 if __name__ == "__main__":
