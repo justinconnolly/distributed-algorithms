@@ -37,8 +37,6 @@ class PriorityQueue:
             self.trickle_down(0)
         else:
             val = self.a.pop()
-        print(self.a)
-        print(self.d)
         return x
 
     def trickle_down(self, i: int) -> None:
