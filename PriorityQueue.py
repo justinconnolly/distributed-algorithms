@@ -6,13 +6,13 @@ class PriorityQueue:
         self.a = []
         # self.d = {}
     
-    def get_parent(self, i: int) -> None:
-        return i // 2
+    def get_parent(self, i: int) -> int:
+        return (i - 1) // 2
     
-    def get_left(self, i: int) -> None:
+    def get_left(self, i: int) -> int:
         return (i * 2) + 1
 
-    def get_right(self, i: int) -> None:
+    def get_right(self, i: int) -> int:
         return 2 * (i + 1)
 
     def add(self, x, weight) -> None:
@@ -95,11 +95,11 @@ if __name__ == "__main__":
     pq = PriorityQueue()
 
     for item in arr:
-        pq.add(item)
+        pq.add(item[0], item[1])
         print(pq.a)
     pq.decrease_key(2,0)
     print(pq.a)
-    print(pq.d)
+    # print(pq.d)
     for i in arr:
         print(pq.get_min())
         print(pq.a)
