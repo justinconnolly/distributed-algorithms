@@ -47,18 +47,6 @@ def setup():
         ]
     }
 
-    bfs = [
-        [0, 1, 2, 5],
-        [0, 1, 2, 5]
-    ]
-    dfs = [
-        [0, 3, 4, 5],
-        [0, 3, 4, 5]
-    ]
-    dijkstra = [
-        [0, 1, 2, 5],
-        [0, 1, 4, 5]
-    ]
 
 
     for i,edges in enumerate(edge_list):
