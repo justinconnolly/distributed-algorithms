@@ -7,8 +7,38 @@ class PriorityQueue:
             self.x = x
             self.weight = weight
 
+        def set_weight(self, weight):
+            self.weight = weight
+
+        def get_weight(self):
+            return self.weight
+
+        def get_val(self):
+            return self.x
+
+        def set_val(self, val):
+            self.x = val
+        
         def __hash__(self) -> int:
             return hash(self.x)
+
+        def __eq__(self, other):
+            return self.weight == other.weight
+        
+        def __le__(self, other):
+            return self.weight <= other.weight
+
+        def __ge__(self, other):
+            return self.weight >= other.weight
+
+        def __lt__(self, other):
+            return self.weight < other.weight
+
+        def __gt__(self, other):
+            return self.weight > other.weight
+
+        def __ne__(self, other):
+            return self.weight != other.weight
 
     def __init__(self) -> None:
         self.a = []
@@ -23,14 +53,14 @@ class PriorityQueue:
     def get_right(self, i: int) -> int:
         return 2 * (i + 1)
 
-    def add(self, x, weight) -> None:
+    def add(self, x, weight) -> bool:
         self.a.append(self.Entry(x, weight))
         self.d[x] = len(self.a) - 1
         self.bubble_up(len(self.a) - 1)
 
     def bubble_up(self, i: int) -> None:
         p = self.get_parent(i)
-        while i > 0 and self.a[i].weight < self.a[p].weight:
+        while i > 0 and self.a[i] < self.a[p]:
             self.a[i], self.a[p] = self.a[p], self.a[i]
             self.d[self.a[i].x], self.d[self.a[p].x] = self.d[self.a[p].x], self.d[self.a[i].x]
             i = p
@@ -51,15 +81,15 @@ class PriorityQueue:
         while i >= 0:
             j = -1
             r = self.get_right(i)
-            if r < len(self.a) and self.a[r].weight < self.a[i].weight:
+            if r < len(self.a) and self.a[r] < self.a[i]:
                 l = self.get_left(i)
-                if self.a[l].weight < self.a[r].weight:
+                if self.a[l] < self.a[r]:
                     j = l
                 else:
                     j = r
             else:
                 l = self.get_left(i)
-                if l < len(self.a) and self.a[l].weight < self.a[i].weight:
+                if l < len(self.a) and self.a[l] < self.a[i]:
                     j = l
             if j >= 0:
                 self.a[j], self.a[i] = self.a[i], self.a[j]
@@ -87,6 +117,7 @@ class PriorityQueue:
         return len(self.a) == 0
 
     def get_weight(self, id):
+        return self.a[self.d[id]].get_weight()
         for val in self.a:
             if val.x == id:
                 return val.weight
