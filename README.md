@@ -7,7 +7,7 @@ Ideally this turns into a reasonable testing platform for COMP4001 - Distributed
 
 
 ## TODO
-Cycle detection, A*, Bellman-Ford, leader election, maybe network flow and Diffie-Hellman, refactor PQ to use generics and nested class for entries rather than a list [weight, value]
+Cycle detection, A*, Bellman-Ford, leader election, maybe network flow and Diffie-Hellman
 
 ## DONE
 BFS, DFS, Floyd-Warshall APSP, Dijkstra, priority queue (to be used as a backing structure for several algorithms), Prim's algorithm for MST, directed and undirected graphs
