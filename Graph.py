@@ -190,7 +190,7 @@ class Digraph:
             pq.add(node.id, dist[node.id])
 
         while not pq.is_empty():
-            weight, curr = pq.get_min()
+            curr = pq.get_min()
             neighbours = self.get_node(curr).get_weighted_neighours()
             for neighbour in neighbours:
                 alt = dist[curr] + neighbours[neighbour]
@@ -214,7 +214,7 @@ class Digraph:
             pq.add(edge, curr.get_weighted_neighours()[edge])
             edge_dict[edge] = start
         while not pq.is_empty():
-            weight, node = pq.get_min()
+            node = pq.get_min()
             seen.add(node)
             for neighbour in self.get_node(node).get_weighted_neighours():
                 if neighbour not in seen:

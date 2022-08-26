@@ -2,6 +2,14 @@ from typing import List
 
 # contains is O(n), and decrease_key is O(n + logn). Need to fix the index dictionary to reduce those of O(1) and O(logn)
 class PriorityQueue:
+    class Entry:
+        def __init__(self, x, weight):
+            self.x = x
+            self.weight = weight
+
+        def __hash__(self) -> int:
+            return hash(self.x)
+
     def __init__(self) -> None:
         self.a = []
         self.d = {}
@@ -16,46 +24,46 @@ class PriorityQueue:
         return 2 * (i + 1)
 
     def add(self, x, weight) -> None:
-        self.a.append([weight, x])
+        self.a.append(self.Entry(x, weight))
         self.d[x] = len(self.a) - 1
         self.bubble_up(len(self.a) - 1)
 
     def bubble_up(self, i: int) -> None:
         p = self.get_parent(i)
-        while i > 0 and self.a[i] < self.a[p]:
+        while i > 0 and self.a[i].weight < self.a[p].weight:
             self.a[i], self.a[p] = self.a[p], self.a[i]
-            self.d[self.a[i][1]], self.d[self.a[p][1]] = self.d[self.a[p][1]], self.d[self.a[i][1]]
+            self.d[self.a[i].x], self.d[self.a[p].x] = self.d[self.a[p].x], self.d[self.a[i].x]
             i = p
             p = self.get_parent(i)
 
     def get_min(self) -> List[int]:
-        x = self.a[0]
-        del self.d[x[1]]
+        i = self.a[0]
+        del self.d[i.x]
         if len(self.a) > 1:
             self.a[0] = self.a.pop()
-            self.d[self.a[0][1]] = 0
+            self.d[self.a[0].x] = 0
             self.trickle_down(0)
         else:
             val = self.a.pop()
-        return x
+        return i.x
 
     def trickle_down(self, i: int) -> None:
         while i >= 0:
             j = -1
             r = self.get_right(i)
-            if r < len(self.a) and self.a[r] < self.a[i]:
+            if r < len(self.a) and self.a[r].weight < self.a[i].weight:
                 l = self.get_left(i)
-                if self.a[l] < self.a[r]:
+                if self.a[l].weight < self.a[r].weight:
                     j = l
                 else:
                     j = r
             else:
                 l = self.get_left(i)
-                if l < len(self.a) and self.a[l] < self.a[i]:
+                if l < len(self.a) and self.a[l].weight < self.a[i].weight:
                     j = l
             if j >= 0:
                 self.a[j], self.a[i] = self.a[i], self.a[j]
-                self.d[self.a[j][1]], self.d[self.a[i][1]] = self.d[self.a[i][1]], self.d[self.a[j][1]]
+                self.d[self.a[j].x], self.d[self.a[i].x] = self.d[self.a[i].x], self.d[self.a[j].x]
             i = j
 
     def decrease_key(self, node: int, weight: int) -> None:
@@ -65,7 +73,7 @@ class PriorityQueue:
         #         i = index
         #         break
         
-        self.a[i][0] = weight
+        self.a[i].weight = weight
         self.bubble_up(i)
 
     def contains(self, node: int) -> bool:
@@ -80,8 +88,8 @@ class PriorityQueue:
 
     def get_weight(self, id):
         for val in self.a:
-            if val[1] == id:
-                return val[0]
+            if val.x == id:
+                return val.weight
         return -1
 
 
