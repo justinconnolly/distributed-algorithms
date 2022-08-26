@@ -3,7 +3,7 @@ from re import L
 from typing import List, Callable
 from PriorityQueue import PriorityQueue
 
-class Graph:
+class Digraph:
     class Node:
         def __init__(self, id: int) -> None:
             self.id = id
@@ -70,7 +70,7 @@ class Graph:
         # self.get_node(node1).add_edge(self.get_node(node2), weight)
         # self.get_node(node2).add_edge(self.get_node(node1), weight)
         self.get_node(node1).add_edge(node2, weight)
-        self.get_node(node2).add_edge(node1, weight)
+        # self.get_node(node2).add_edge(node1, weight)
     
     # not strictly necessary because the edges are stored in dictionaries, but reasonable to have
     def update_edge(self, updated_edge: List[int]) -> None:
@@ -227,14 +227,14 @@ class Graph:
                             edge_dict[neighbour] = node
         return edge_dict
 
-"""
-add all neighbours of start to pq
-x = [start, end]
-weight = weight of x to end
-dictionary to set dict[end] to start
-then add that pair to the mst
-"""     
-            
+
+class Graph(Digraph):
+    def __init__(self, num_nodes: int = 0) -> None:
+        super().__init__(num_nodes)
+
+    def add_edge(self, node1: int, node2: int, weight: int):
+        self.get_node(node1).add_edge(node2, weight)
+        self.get_node(node2).add_edge(node1, weight)            
 
 
 if __name__ == "__main__":

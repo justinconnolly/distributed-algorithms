@@ -62,6 +62,7 @@ def setup():
         assert network.first_search(0, 5, False) == solutions['dfs'][i]
         print("=======")
         assert network.dijkstra(0,5) == solutions['dijkstra'][i]
+        print(network.dijkstra(0,5))
         print("=======")
         assert network.mst(0) == solutions['mst'][i]
         print(solutions['mst'][i])
