@@ -43,7 +43,7 @@ class Digraph:
         #     return other.id == self.id
     
     def __init__(self, num_nodes: int = 0) -> None:
-        self.nodes = [self.Node(x) for x in range(num_nodes)]
+        self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
     def get_node(self, id: int) -> Node:
         if id >= len(self.nodes) or id < 0:
@@ -158,8 +158,8 @@ class Digraph:
         paths = [[math.inf for x in range(len(self.nodes))] for y in range(len(self.nodes))]
         for i,node in enumerate(self.nodes):
             paths[i][i] = 0
-            for key in node.get_weighted_neighours():
-                paths[i][key] = node.get_weight(key)
+            for key in self.nodes[node].get_weighted_neighours():
+                paths[i][key] = self.nodes[node].get_weight(key)
         return paths
 
     def floyd_warshall(self) -> List[List[int]]:
@@ -184,10 +184,10 @@ class Digraph:
         prev = {start: None}
 
         for node in self.nodes:
-            if node.id != start:
-                dist[node.id] = math.inf
-                prev[node.id] = None
-            pq.add(node.id, dist[node.id])
+            if self.nodes[node].id != start:
+                dist[self.nodes[node].id] = math.inf
+                prev[self.nodes[node].id] = None
+            pq.add(self.nodes[node].id, dist[self.nodes[node].id])
 
         while not pq.is_empty():
             curr = pq.get_min()
@@ -207,7 +207,7 @@ class Digraph:
         curr = self.get_node(start)
         pq = PriorityQueue()
         seen = set([start])
-        unseen = set([x.id for x in self.nodes])
+        unseen = set([self.nodes[x].id for x in self.nodes])
         unseen.remove(start)
         edge_dict = {}
         for edge in curr.get_weighted_neighours():
