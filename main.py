@@ -71,5 +71,10 @@ def setup():
         network.apsp()
         print("---------------------")
 
+def test_cases():
+    graph = Graph.Graph()
+    print(graph.apsp())
+
 if __name__ == "__main__":
-    setup()
+    # setup()
+    test_cases()

@@ -135,7 +135,9 @@ class Digraph:
     # why not, right? provide BFS = True parameter otherwise it'll DFS. Could probably return the path?
     def first_search(self, start: int, end: int, BFS: bool=False) -> List[int]:
         if not self.check_nodes_exist(start, end):
-            return
+            return []
+        if start == end:
+            return [start]
         print(f"Beginning {'BFS' if BFS else 'DFS'} from {start} to {end}")
         queue = [start]
         seen = set()
@@ -153,6 +155,7 @@ class Digraph:
                     seen.add(neighbour)
                     queue.append(neighbour)
         print("Unreachable.")
+        return []
 
     def get_path_matrix(self) -> List[List[int]]:
         paths = [[math.inf for x in range(len(self.nodes))] for y in range(len(self.nodes))]
@@ -174,10 +177,11 @@ class Digraph:
         paths = self.floyd_warshall()
         for i, path in enumerate(paths):
             print(f"{i}: {path}")
+        return paths
 
     def dijkstra(self, start: int, end: int) -> List[int]:
         if not self.check_nodes_exist(start, end):
-            return
+            return []
         print(f"Beginning Dijkstra's algorithm from {start} to {end}.")
         pq = PriorityQueue()
         dist = {start: 0}
@@ -202,7 +206,7 @@ class Digraph:
 
 
 
-    def mst(self, start: int):
+    def mst(self, start: int = 0):
         print(f"Beginning Prim's algorithm from {start}")
         curr = self.get_node(start)
         pq = PriorityQueue()
