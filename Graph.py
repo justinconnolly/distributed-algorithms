@@ -42,7 +42,7 @@ class Digraph:
         # def __eq__(self, other):
         #     return other.id == self.id
     
-    def __init__(self, num_nodes: int = 0) -> None:
+    def __init__(self, num_nodes: int = 1) -> None:
         self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
     def get_node(self, id: int) -> Node:
@@ -229,7 +229,7 @@ class Digraph:
 
 
 class Graph(Digraph):
-    def __init__(self, num_nodes: int = 0) -> None:
+    def __init__(self, num_nodes: int = 1) -> None:
         super().__init__(num_nodes)
 
     def add_edge(self, node1: int, node2: int, weight: int):
