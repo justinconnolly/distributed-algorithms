@@ -19,6 +19,12 @@ class Digraph:
         def add_edge(self, id: int, weight: int) -> None:
             self.neighbours[id] = weight
 
+        def remove_edge(self, id):
+            if id in self.neighbours:
+                del self.neighbours[id]
+                return True
+            return False
+
         def get_unweighted_neighbours(self) -> List[int]:
             return [neighbour for neighbour in self.neighbours]
 
@@ -62,6 +68,21 @@ class Digraph:
         if id in self.nodes:
             return True
         return False
+
+    def add_node(self, id) -> bool:
+        if id not in self.nodes:
+            self.nodes[id] = self.Node(id)
+            return True
+        return False
+
+    def remove_node(self, id) -> bool:
+        if id not in self.nodes:
+            return False
+        del self.nodes[id]
+        for node in self.nodes:
+            if id in self.nodes[node].get_weighted_neighours():
+                self.nodes[node].remove_edge(id)
+        return True
 
     # def add_edge(self, node1, node2, weight):
     # def add_edge(self, new_edge: List[int]) -> None:
@@ -238,7 +259,15 @@ class Graph(Digraph):
 
     def add_edge(self, node1: int, node2: int, weight: int):
         self.get_node(node1).add_edge(node2, weight)
-        self.get_node(node2).add_edge(node1, weight)            
+        self.get_node(node2).add_edge(node1, weight)
+
+    def remove_node(self, id):
+        if id not in self.nodes:
+            return False
+        for neighbour in self.get_node(id).get_weighted_neighours():
+            self.nodes[neighbour].remove_edge(id)
+        del self.nodes[id]
+        return True
 
 
 if __name__ == "__main__":
