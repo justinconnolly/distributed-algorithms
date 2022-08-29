@@ -52,9 +52,12 @@ class Digraph:
         self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
     def get_node(self, id: int) -> Node:
-        if id >= len(self.nodes) or id < 0:
+        # if id >= len(self.nodes) or id < 0:
+        #     return -1
+        if id not in self.nodes:
             return -1
         return self.nodes[id]
+
 
     def print_nodes(self) -> None:
         for node in self.nodes:
@@ -79,6 +82,7 @@ class Digraph:
         if id not in self.nodes:
             return False
         del self.nodes[id]
+        print("SDFSDFSDFFD")
         for node in self.nodes:
             if id in self.nodes[node].get_weighted_neighours():
                 self.nodes[node].remove_edge(id)
@@ -87,10 +91,13 @@ class Digraph:
     # def add_edge(self, node1, node2, weight):
     # def add_edge(self, new_edge: List[int]) -> None:
     def add_edge(self, node1: int, node2: int, weight: int):
+        if node1 not in self.nodes or node2 not in self.nodes:
+            return False
         # node1, node2, weight = new_edge
         # self.get_node(node1).add_edge(self.get_node(node2), weight)
         # self.get_node(node2).add_edge(self.get_node(node1), weight)
         self.get_node(node1).add_edge(node2, weight)
+        return True
         # self.get_node(node2).add_edge(node1, weight)
     
     # not strictly necessary because the edges are stored in dictionaries, but reasonable to have
@@ -258,10 +265,13 @@ class Graph(Digraph):
         super().__init__(num_nodes)
 
     def add_edge(self, node1: int, node2: int, weight: int):
+        if node1 not in self.nodes or node2 not in self.nodes:
+            return False
         self.get_node(node1).add_edge(node2, weight)
         self.get_node(node2).add_edge(node1, weight)
+        return True
 
-    def remove_node(self, id):
+    def remove_node(self, id) -> bool:
         if id not in self.nodes:
             return False
         for neighbour in self.get_node(id).get_weighted_neighours():
