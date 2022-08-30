@@ -12,7 +12,7 @@ class GraphTest(unittest.TestCase):
             [2,5,5],
             [3,2,1],
             [3,4,4],
-            [4,5,2]
+            [4,5,2],
         ]
 
         self.start_end = [
@@ -79,7 +79,6 @@ class GraphTest(unittest.TestCase):
             self.bfs_test(i)
             self.dfs_test(i)
             self.dijkstra_test(i)
-        # self.add_remove_test()
 
     def test_MST(self):
         self.assertEqual(self.graph.mst(), self.solutions['mst'])
@@ -87,13 +86,17 @@ class GraphTest(unittest.TestCase):
     def test_APSP(self):
         self.assertEqual(self.graph.apsp(), self.solutions['apsp'])
 
-    def test_add_remove_test(self):
+    def test_add_remove(self):
         self.assertTrue(self.graph.remove_node(1))
         self.assertFalse(self.graph.remove_node(1))
         self.assertTrue(self.graph.add_node(1))
+        self.assertFalse(self.graph.add_node(1))
         self.assertTrue(self.graph.add_edge(0,1,1))
         self.assertTrue(self.graph.add_edge(1,2,3))
         self.assertTrue(self.graph.add_edge(1,3,1))
+        self.assertTrue(self.graph.add_node('String'))
+        self.assertTrue(self.graph.add_edge('String', 1, 5))
+
 
 if __name__ == "__main__":
     unittest.main()

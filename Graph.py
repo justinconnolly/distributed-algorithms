@@ -1,13 +1,13 @@
 import math
-from re import L
 from typing import List, Callable
 from PriorityQueue import PriorityQueue
 
 class Digraph:
     class Node:
-        def __init__(self, id: int) -> None:
+        def __init__(self, id: int, val=None) -> None:
             self.id = id
             self.neighbours = {}    # dictionary of k:v id:weight
+            self.val = val
 
         def info(self) -> None:
             print(f"Node: {self.id}")
