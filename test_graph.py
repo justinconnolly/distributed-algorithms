@@ -88,8 +88,10 @@ class GraphTest(unittest.TestCase):
 
     def test_add_remove(self):
         self.assertTrue(self.graph.remove_node(1))
+        self.assertFalse(self.graph.contains_id(1))
         self.assertFalse(self.graph.remove_node(1))
         self.assertTrue(self.graph.add_node(1))
+        self.assertTrue(self.graph.contains_id(1))
         self.assertFalse(self.graph.add_node(1))
         self.assertTrue(self.graph.add_edge(0,1,1))
         self.assertTrue(self.graph.add_edge(1,2,3))

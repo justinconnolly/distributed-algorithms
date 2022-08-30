@@ -5,7 +5,7 @@ from PriorityQueue import PriorityQueue
 class Digraph:
     class Node:
         def __init__(self, id: int, val=None) -> None:
-            self.id = id
+            self.id = id            
             self.neighbours = {}    # dictionary of k:v id:weight
             self.val = val
 
@@ -49,56 +49,56 @@ class Digraph:
         #     return other.id == self.id
     
     def __init__(self, num_nodes: int = 1) -> None:
+        self.node_id_counter = num_nodes
+        # self.val_dictionary = {None: [x] for x in range(num_nodes)}
         self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
-    def get_node(self, id: int) -> Node:
-        # if id >= len(self.nodes) or id < 0:
-        #     return -1
+    def get_node_by_id(self, id: int) -> Node:
         if id not in self.nodes:
             return -1
         return self.nodes[id]
+
+    # I wonder if there should be a backing dictionary to connect values to IDs so get_node_by_val is O(1).
+    def get_node_by_val(self, val):
+        pass
 
 
     def print_nodes(self) -> None:
         for node in self.nodes:
             node.print_neighbours()
-    
-    def add_node(self, val):
-        self.nodes.append(self.Node(val))
         
     # this implies maybe I should have a set or dict id:index for O(1) rather than O(n)
-    def contains(self, id: int) -> bool:
+    def contains_id(self, id: int) -> bool:
         if id in self.nodes:
             return True
         return False
 
-    def add_node(self, id) -> bool:
+    def add_node(self, id=None, val=None) -> bool:
         if id not in self.nodes:
-            self.nodes[id] = self.Node(id)
+            self.node_id_counter += 1
+            self.nodes[id] = self.Node(id,val)
+            # if val not in self.val_dictionary:
+            #     self.val_dictionary[val] = []
+            # self.val_dictionary[val].append(id)
             return True
         return False
 
     def remove_node(self, id) -> bool:
         if id not in self.nodes:
             return False
+        # if self.nodes[id].val in self.val_dictionary:
+        #     self.val_dictionary[self.nodes[id].val].remove(id)
         del self.nodes[id]
-        print("SDFSDFSDFFD")
         for node in self.nodes:
             if id in self.nodes[node].get_weighted_neighours():
                 self.nodes[node].remove_edge(id)
         return True
 
-    # def add_edge(self, node1, node2, weight):
-    # def add_edge(self, new_edge: List[int]) -> None:
     def add_edge(self, node1: int, node2: int, weight: int):
         if node1 not in self.nodes or node2 not in self.nodes:
             return False
-        # node1, node2, weight = new_edge
-        # self.get_node(node1).add_edge(self.get_node(node2), weight)
-        # self.get_node(node2).add_edge(self.get_node(node1), weight)
-        self.get_node(node1).add_edge(node2, weight)
+        self.get_node_by_id(node1).add_edge(node2, weight)
         return True
-        # self.get_node(node2).add_edge(node1, weight)
     
     # not strictly necessary because the edges are stored in dictionaries, but reasonable to have
     def update_edge(self, updated_edge: List[int]) -> None:
@@ -108,7 +108,7 @@ class Digraph:
     def get_path_weight(self, path: List[List[int]]) -> int:
         total_weight = 0
         for i in range(1, len(path)):
-            total_weight += self.get_node(path[i]).get_weight(path[i - 1])
+            total_weight += self.get_node_by_id(path[i]).get_weight(path[i - 1])
         return total_weight
 
     def print_path(self, end: int, path_dict: dict) -> List[int]:
@@ -122,10 +122,10 @@ class Digraph:
 
     # this was made redundant with the addition of first_search below
     def bfs(self, start: int, end: int) -> None:
-        if self.get_node(start) == -1 or self.get_node(end) == -1:
-            if self.get_node(start) == -1 and self.get_node(end) == -1:
+        if self.get_node_by_id(start) == -1 or self.get_node_by_id(end) == -1:
+            if self.get_node_by_id(start) == -1 and self.get_nod_by_id(end) == -1:
                 print("Neither nodes exist.")
-            elif self.get_node(start) == -1:
+            elif self.get_node_by_id(start) == -1:
                 print("Start node does not exist.")
             else:
                 print("End node does not exist.")
@@ -138,7 +138,7 @@ class Digraph:
         path[start] = None
         while queue:
             curr = queue.pop(0)
-            for neighbour in self.get_node(curr).get_unweighted_neighbours():
+            for neighbour in self.get_node_by_id(curr).get_unweighted_neighbours():
                 if neighbour not in seen:
                     path[neighbour] = curr
                     if neighbour == end:
@@ -150,10 +150,10 @@ class Digraph:
         print("Unreachable.")
 
     def check_nodes_exist(self, node1: int, node2: int) -> bool:
-        if self.get_node(node1) == -1 or self.get_node(node2) == -1:
-            if self.get_node(node1) == -1 and self.get_node(node2) == -1:
+        if self.get_node_by_id(node1) == -1 or self.get_node_by_id(node2) == -1:
+            if self.get_node_by_id(node1) == -1 and self.get_node_by_id(node2) == -1:
                 print("Neither nodes exist.")
-            elif self.get_node(node1) == -1:
+            elif self.get_node_by_id(node1) == -1:
                 print("Start node does not exist.")
             else:
                 print("End node does not exist.")
@@ -174,7 +174,7 @@ class Digraph:
         path[start] = None
         while queue:
             curr = queue.pop(0) if BFS else queue.pop()
-            for neighbour in self.get_node(curr).get_unweighted_neighbours():
+            for neighbour in self.get_node_by_id(curr).get_unweighted_neighbours():
                 if neighbour not in seen:
                     path[neighbour] = curr
                     if neighbour == end:
@@ -223,7 +223,7 @@ class Digraph:
 
         while not pq.is_empty():
             curr = pq.get_min()
-            neighbours = self.get_node(curr).get_weighted_neighours()
+            neighbours = self.get_node_by_id(curr).get_weighted_neighours()
             for neighbour in neighbours:
                 alt = dist[curr] + neighbours[neighbour]
                 if alt < dist[neighbour] and dist[curr] is not math.inf and pq.contains(neighbour):
@@ -236,7 +236,7 @@ class Digraph:
 
     def mst(self, start: int = 0):
         print(f"Beginning Prim's algorithm from {start}")
-        curr = self.get_node(start)
+        curr = self.get_node_by_id(start)
         pq = PriorityQueue()
         seen = set([start])
         unseen = set([self.nodes[x].id for x in self.nodes])
@@ -248,14 +248,14 @@ class Digraph:
         while not pq.is_empty():
             node = pq.get_min()
             seen.add(node)
-            for neighbour in self.get_node(node).get_weighted_neighours():
+            for neighbour in self.get_node_by_id(node).get_weighted_neighours():
                 if neighbour not in seen:
                     if not pq.contains(neighbour):
-                        pq.add(neighbour, self.get_node(node).get_weighted_neighours()[neighbour])
+                        pq.add(neighbour, self.get_node_by_id(node).get_weighted_neighours()[neighbour])
                         edge_dict[neighbour] = node
                     else:
-                        if self.get_node(node).get_weighted_neighours()[neighbour] < pq.get_weight(neighbour):
-                            pq.decrease_key(neighbour, self.get_node(node).get_weighted_neighours()[neighbour])
+                        if self.get_node_by_id(node).get_weighted_neighours()[neighbour] < pq.get_weight(neighbour):
+                            pq.decrease_key(neighbour, self.get_node_by_id(node).get_weighted_neighours()[neighbour])
                             edge_dict[neighbour] = node
         return edge_dict
 
@@ -267,14 +267,14 @@ class Graph(Digraph):
     def add_edge(self, node1: int, node2: int, weight: int):
         if node1 not in self.nodes or node2 not in self.nodes:
             return False
-        self.get_node(node1).add_edge(node2, weight)
-        self.get_node(node2).add_edge(node1, weight)
+        self.get_node_by_id(node1).add_edge(node2, weight)
+        self.get_node_by_id(node2).add_edge(node1, weight)
         return True
 
     def remove_node(self, id) -> bool:
         if id not in self.nodes:
             return False
-        for neighbour in self.get_node(id).get_weighted_neighours():
+        for neighbour in self.get_node_by_id(id).get_weighted_neighours():
             self.nodes[neighbour].remove_edge(id)
         del self.nodes[id]
         return True
