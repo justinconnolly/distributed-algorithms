@@ -1,5 +1,5 @@
 import math
-from typing import List, Callable
+from typing import List, Callable, Union
 from PriorityQueue import PriorityQueue
 
 class Digraph:
@@ -53,7 +53,7 @@ class Digraph:
         # self.val_dictionary = {None: [x] for x in range(num_nodes)}
         self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
-    def get_node_by_id(self, id: int) -> Node:
+    def get_node_by_id(self, id: int) -> Union[Node, int]:
         if id not in self.nodes:
             return -1
         return self.nodes[id]
@@ -94,7 +94,7 @@ class Digraph:
                 self.nodes[node].remove_edge(id)
         return True
 
-    def add_edge(self, node1: int, node2: int, weight: int):
+    def add_edge(self, node1: int, node2: int, weight: int) -> bool:
         if node1 not in self.nodes or node2 not in self.nodes:
             return False
         self.get_node_by_id(node1).add_edge(node2, weight)
@@ -234,7 +234,7 @@ class Digraph:
 
 
 
-    def mst(self, start: int = 0):
+    def mst(self, start: int = 0) -> dict:
         print(f"Beginning Prim's algorithm from {start}")
         curr = self.get_node_by_id(start)
         pq = PriorityQueue()
@@ -264,7 +264,7 @@ class Graph(Digraph):
     def __init__(self, num_nodes: int = 1) -> None:
         super().__init__(num_nodes)
 
-    def add_edge(self, node1: int, node2: int, weight: int):
+    def add_edge(self, node1: int, node2: int, weight: int) -> bool:
         if node1 not in self.nodes or node2 not in self.nodes:
             return False
         self.get_node_by_id(node1).add_edge(node2, weight)
