@@ -4,6 +4,7 @@ from PriorityQueue import PriorityQueue
 
 # TODO:
 # add subgraphs
+# have get_node_by_id to return None rather than -1
 
 class Digraph:
     class Node:
@@ -56,6 +57,8 @@ class Digraph:
         # self.val_dictionary = {None: [x] for x in range(num_nodes)}
         self.nodes = {x: self.Node(x) for x in range(num_nodes)}
     
+    # TODO
+    # Update to return None if not found
     def get_node_by_id(self, id: int) -> Union[Node, int]:
         if id not in self.nodes:
             return -1
@@ -76,6 +79,8 @@ class Digraph:
             return True
         return False
 
+    # adds a new node to the backing dictionary
+    # Should maybe have a class variable to assign IDs rather than None
     def add_node(self, id=None, val=None) -> bool:
         if id not in self.nodes:
             self.node_id_counter += 1
@@ -86,6 +91,7 @@ class Digraph:
             return True
         return False
 
+    # Removes a node from the backing dictionary as well as all incident edges from neighbours
     def remove_node(self, id) -> bool:
         if id not in self.nodes:
             return False
@@ -97,6 +103,7 @@ class Digraph:
                 self.nodes[node].remove_edge(id)
         return True
 
+    # adds a directed weighted edge from node1 to node2
     def add_edge(self, node1: int, node2: int, weight: int) -> bool:
         if node1 not in self.nodes or node2 not in self.nodes:
             return False
@@ -106,7 +113,6 @@ class Digraph:
     # not strictly necessary because the edges are stored in dictionaries, but reasonable to have
     def update_edge(self, updated_edge: List[int]) -> None:
         self.add_edge(updated_edge)
-
 
     def get_path_weight(self, path: List[List[int]]) -> int:
         total_weight = 0
@@ -152,6 +158,7 @@ class Digraph:
                     queue.append(neighbour)
         print("Unreachable.")
 
+    # Makes sure both node1 and node2 exist
     def check_nodes_exist(self, node1: int, node2: int) -> bool:
         if self.get_node_by_id(node1) == -1 or self.get_node_by_id(node2) == -1:
             if self.get_node_by_id(node1) == -1 and self.get_node_by_id(node2) == -1:
