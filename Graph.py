@@ -2,6 +2,9 @@ import math
 from typing import List, Callable, Union
 from PriorityQueue import PriorityQueue
 
+# TODO:
+# add subgraphs
+
 class Digraph:
     class Node:
         def __init__(self, id: int, val=None) -> None:
@@ -185,6 +188,8 @@ class Digraph:
         print("Unreachable.")
         return []
 
+
+    # returns an adjacency matrix for the graph
     def get_path_matrix(self) -> List[List[int]]:
         paths = [[math.inf for x in range(len(self.nodes))] for y in range(len(self.nodes))]
         for i,node in enumerate(self.nodes):
@@ -193,6 +198,7 @@ class Digraph:
                 paths[i][key] = self.nodes[node].get_weight(key)
         return paths
 
+    # returns an adjacency matrix with all pairs shortest paths
     def floyd_warshall(self) -> List[List[int]]:
         paths = self.get_path_matrix()
         for k in range(len(paths)):
@@ -201,12 +207,15 @@ class Digraph:
                     paths[i][j] = min([paths[i][k] + paths[k][j], paths[i][j]])
         return paths
 
+    # prints then returns an adjacency matrix with all pairs shortest paths
     def apsp(self) -> None:
         paths = self.floyd_warshall()
         for i, path in enumerate(paths):
             print(f"{i}: {path}")
         return paths
 
+    # probably doesn't actually need to take an end ID, will just return a list of single-source
+    # shortest path from the start node
     def dijkstra(self, start: int, end: int) -> List[int]:
         if not self.check_nodes_exist(start, end):
             return []
@@ -233,7 +242,8 @@ class Digraph:
         return self.print_path(end, prev)
 
 
-
+    # uses prim's algorithm to return a dict with k:v parent:child for a minimum spanning tree
+    # should maybe return a subgraph instead?
     def mst(self, start: int = 0) -> dict:
         print(f"Beginning Prim's algorithm from {start}")
         curr = self.get_node_by_id(start)
